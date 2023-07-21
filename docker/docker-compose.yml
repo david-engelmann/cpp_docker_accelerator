@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  word_vectors:
+    # Set the Name of The Container
+    container_name: "${PROJECT_NAME:-word_vectors}"
+    # Set the Name of the Image and the Version
+    image: "${PROJECT_NAME:-word_vectors}_${ENV_TYPE:-dev}:${PROJECT_VERSION:-1}"
+
+    # Add labels to Image
+    labels:
+      maintainer: "david-engelmann"
+
+    # Add a User
+    user: root
+
+    # .env style variables
+    env_file:
+      - ../docker/docker.env
+
+    # Set Working Directory
+    working_dir: "/workspaces/${PROJECT_NAME:-word_vectors}"
+
+    # Set Volumes
+    volumes:
+      - type: "bind"
+        source: ".."
+        target: "/workspaces/${PROJECT_NAME:-word_vectors}"
+    # Uncomment to Debug
+    command: ["sh", "-c", "cd /usr/src/myapp && ./myapp"]
+
+    build:
+      context: ".."
+      dockerfile: "./docker/Dockerfile"
+
+      args:
+        PROJECT_NAME: "${PROJECT_NAME:-word_vectors}"
+        PROJECT_VERSION: "${PROJECT_VERSION:-1}"
+        ENV_TYPE: "${ENV_TYPE:-dev}"
+        UBUNTU_VERSION: "${UBUNTU_VERSION:-20.04}"
+        VARIANT: "${VARIANT:-focal}"

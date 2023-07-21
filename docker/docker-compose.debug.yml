@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  word_vectors:
+    image: word_vectors
+    build:
+      context: .
+      dockerfile: ./Dockerfile
